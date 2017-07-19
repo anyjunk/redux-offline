@@ -25,14 +25,14 @@ export const offline = (userConfig: $Shape<Config> = {}) => (createStore: any) =
 
   // wraps userland reducer with a top-level
   // reducer that handles offline state updating
-  const offlineReducer = enhanceReducer(reducer);
+  const offlineReducer = enhanceReducer(reducer, config);
 
   const offlineMiddleware = applyMiddleware(createOfflineMiddleware(config));
 
   // create autoRehydrate enhancer if required
-  const offlineEnhancer = config.persist && config.rehydrate
-    ? compose(offlineMiddleware, autoRehydrate())
-    : offlineMiddleware;
+  const offlineEnhancer = config.persist && config.rehydrate && config.persistAutoRehydrate
+    ? compose(offlineMiddleware, enhancer, config.persistAutoRehydrate())
+    : compose(offlineMiddleware, enhancer);
 
   // create store
   const store = offlineEnhancer(createStore)(offlineReducer, preloadedState, enhancer);

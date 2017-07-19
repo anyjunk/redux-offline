@@ -14,25 +14,27 @@ export const createOfflineMiddleware = (config: Config) =>
 
     // find any actions to send, if any
     const state: AppState = store.getState();
-    const offlineAction = state.offline.outbox[0];
+    const offline = config.offlineStateLens(state).get;
+    const offlineAction = offline.outbox[0];
 
     // if the are any actions in the queue that we are not
     // yet processing, send those actions
     if (
       offlineAction &&
-      !state.offline.busy &&
-      !state.offline.retryScheduled &&
-      state.offline.online
+      !offline.busy &&
+      !offline.retryScheduled &&
+      offline.online
     ) {
-      send(offlineAction, store.dispatch, config, state.offline.retryCount);
+      send(offlineAction, store.dispatch, config, offline.retryCount);
     }
 
     if (action.type === OFFLINE_SCHEDULE_RETRY) {
       after(action.payload.delay).then(() => store.dispatch(completeRetry(offlineAction)));
     }
 
-    if (action.type === OFFLINE_SEND && offlineAction && !state.offline.busy) {
-      send(offlineAction, store.dispatch, config, state.offline.retryCount);
+    if (action.type === OFFLINE_SEND && offlineAction && !offline.busy) {
+      send(offlineAction, store.dispatch, config, offline.retryCount);
     }
+
     return result;
   };

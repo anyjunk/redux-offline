@@ -1,7 +1,6 @@
 // @flow
 /* global $Shape */
 import { applyMiddleware, compose } from 'redux';
-import { autoRehydrate } from 'redux-persist';
 import type { Config } from './types';
 import { createOfflineMiddleware } from './middleware';
 import { enhanceReducer } from './updater';

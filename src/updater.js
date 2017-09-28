@@ -1,5 +1,5 @@
 // @flow
-/*global $Shape*/
+/* global $Shape */
 
 import type { OfflineState, OfflineAction, ResultAction, Config } from './types';
 import {

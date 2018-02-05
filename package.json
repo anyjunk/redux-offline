@@ -1,5 +1,5 @@
 {
-  "name": "@redux-offline/redux-offline",
+  "name": "@anyjunk/redux-offline",
   "version": "2.2.1",
   "description": "Redux Offline-First Architecture",
   "main": "lib/index.js",
